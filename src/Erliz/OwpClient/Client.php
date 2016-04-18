@@ -171,7 +171,7 @@ class Client
             ->setExpirationDate(
                 $this->isNilProperty($serverData->expiration_date) ?
                     false :
-                    date_create_from_format('Y-m-d|', $serverData->expiration_date)
+                    date_create_from_format('Y-m-d|', (string) $serverData->expiration_date)
             )
             ->setHardwareServerId((int) $serverData->hardware_server_id)
             ->setHostName($serverData->host_name)
