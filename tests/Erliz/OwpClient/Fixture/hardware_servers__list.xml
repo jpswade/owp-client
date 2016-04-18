@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hardware_servers type="array">
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86_64</default_os_template>
+    <default_server_template>vswap-2g</default_server_template>
+    <description>32G / SAS 1.1T</description>
+    <host>dev11.example.com</host>
+    <id type="integer">4</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86_64-vz</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>80G / SAS 1.1T</description>
+    <host>dev2.example.com</host>
+    <id type="integer">5</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>64G / SAS 1.1T</description>
+    <host>dev1.example.com</host>
+    <id type="integer">6</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>64G / SATA 900G</description>
+    <host>dev3.example.com</host>
+    <id type="integer">7</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>80G / SSD 1.3T</description>
+    <host>dev4.example.com</host>
+    <id type="integer">8</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86_64</default_os_template>
+    <default_server_template>basic</default_server_template>
+    <description></description>
+    <host>example.dev</host>
+    <id type="integer">9</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">false</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>4G / SATA 300G</description>
+    <host>dev5.example.com</host>
+    <id type="integer">11</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>64G / SSD 500G</description>
+    <host>fox.example.com</host>
+    <id type="integer">12</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86_64</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>128G / SSD 1.3T</description>
+    <host>dev6.example.com</host>
+    <id type="integer">13</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>128G / SSD 1.3T</description>
+    <host>dev7.example.com</host>
+    <id type="integer">14</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>128G / SSD 1.8T</description>
+    <host>dev8.example.com</host>
+    <id type="integer">15</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>128G / SSD 1.8T</description>
+    <host>dev9.example.com</host>
+    <id type="integer">16</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-256m</default_server_template>
+    <description>128G / SSD 1.8T</description>
+    <host>dev10.example.com</host>
+    <id type="integer">17</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+  <hardware_server>
+    <daemon_port type="integer">7767</daemon_port>
+    <default_os_template>linux-x86</default_os_template>
+    <default_server_template>vswap-2g</default_server_template>
+    <description></description>
+    <host>dev12.example.com</host>
+    <id type="integer">18</id>
+    <use_ssl type="boolean">true</use_ssl>
+    <vswap type="boolean">true</vswap>
+  </hardware_server>
+</hardware_servers>

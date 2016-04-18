@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<virtual_servers type="array">
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description></description>
+    <diskspace type="integer">50</diskspace>
+    <expiration_date type="date">2016-12-31</expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>db1.vz</host_name>
+    <id type="integer">259</id>
+    <identity type="integer">1</identity>
+    <ip_address>198.162.88.51</ip_address>
+    <memory type="integer">6096</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz-4</orig_os_template>
+    <orig_server_template>vswap-2g</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">true</start_on_boot>
+    <state>running</state>
+    <user_id type="integer" nil="true"></user_id>
+    <vswap type="integer">6096</vswap>
+  </virtual_server>
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description></description>
+    <diskspace type="integer">400</diskspace>
+    <expiration_date type="date" nil="true"></expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>graphite.inf</host_name>
+    <id type="integer">272</id>
+    <identity>3</identity>
+    <ip_address>198.162.88.11</ip_address>
+    <memory type="integer">4096</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz-4</orig_os_template>
+    <orig_server_template>vswap-512m</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">true</start_on_boot>
+    <state>running</state>
+    <user_id type="integer" nil="true"></user_id>
+    <vswap type="integer">1024</vswap>
+  </virtual_server>
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description></description>
+    <diskspace type="integer">2</diskspace>
+    <expiration_date type="date" nil="true"></expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>cachedb1.vz</host_name>
+    <id type="integer">286</id>
+    <identity>4</identity>
+    <ip_address>198.162.88.102</ip_address>
+    <memory type="integer">256</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz-4</orig_os_template>
+    <orig_server_template>vswap-256m</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">false</start_on_boot>
+    <state>running</state>
+    <user_id type="integer" nil="true"></user_id>
+    <vswap type="integer">512</vswap>
+  </virtual_server>
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description nil="true"></description>
+    <diskspace type="integer">1024</diskspace>
+    <expiration_date type="date" nil="true"></expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>log2.vz</host_name>
+    <id type="integer">317</id>
+    <identity>5</identity>
+    <ip_address>198.162.88.20</ip_address>
+    <memory type="integer">1024</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz</orig_os_template>
+    <orig_server_template>vswap-256m</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">false</start_on_boot>
+    <state>running</state>
+    <user_id type="integer">0</user_id>
+    <vswap type="integer">4096</vswap>
+  </virtual_server>
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description></description>
+    <diskspace type="integer">160</diskspace>
+    <expiration_date type="date" nil="true"></expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>logstash.inf</host_name>
+    <id type="integer">336</id>
+    <identity>7</identity>
+    <ip_address>198.162.88.21</ip_address>
+    <memory type="integer">8192</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz-4</orig_os_template>
+    <orig_server_template>vswap-2g</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">true</start_on_boot>
+    <state>running</state>
+    <user_id type="integer" nil="true"></user_id>
+    <vswap type="integer">4096</vswap>
+  </virtual_server>
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description nil="true"></description>
+    <diskspace type="integer">30</diskspace>
+    <expiration_date type="date" nil="true"></expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>log1.vz</host_name>
+    <id type="integer">338</id>
+    <identity>8</identity>
+    <ip_address>198.162.88.47</ip_address>
+    <memory type="integer">512</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz-4</orig_os_template>
+    <orig_server_template>vswap-256m</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">false</start_on_boot>
+    <state>running</state>
+    <user_id type="integer">0</user_id>
+    <vswap type="integer">512</vswap>
+  </virtual_server>
+  <virtual_server>
+    <cpu_limit type="integer" nil="true"></cpu_limit>
+    <cpu_units type="integer">1000</cpu_units>
+    <cpus type="integer" nil="true"></cpus>
+    <daily_backup type="boolean">false</daily_backup>
+    <description nil="true"></description>
+    <diskspace type="integer">100</diskspace>
+    <expiration_date type="date" nil="true"></expiration_date>
+    <hardware_server_id type="integer">4</hardware_server_id>
+    <host_name>log1.inf</host_name>
+    <id type="integer">339</id>
+    <identity>9</identity>
+    <ip_address>198.162.88.46</ip_address>
+    <memory type="integer">1024</memory>
+    <nameserver nil="true"></nameserver>
+    <orig_os_template>linux-x86_64-vz-4</orig_os_template>
+    <orig_server_template>vswap-256m</orig_server_template>
+    <search_domain nil="true"></search_domain>
+    <start_on_boot type="boolean">true</start_on_boot>
+    <state>stopped</state>
+    <user_id type="integer">0</user_id>
+    <vswap type="integer">1</vswap>
+  </virtual_server>
+</virtual_servers>
