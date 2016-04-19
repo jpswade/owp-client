@@ -52,7 +52,7 @@ class Client
     }
 
     /**
-     * @return array
+     * @return HardwareServerEntity[]
      * @throws ClientException
      */
     public function getHardwareServers()
@@ -69,7 +69,7 @@ class Client
     /**
      * @param int $id
      *
-     * @return array
+     * @return VirtualServerEntity[]
      * @throws ClientException
      */
     public function getVirtualServersByHardwareServerId($id)
