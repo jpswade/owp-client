@@ -11,12 +11,14 @@
 
 namespace Erliz\OwpClient\Entity;
 
+use JsonSerializable;
+
 /**
  * Class HardwareServerEntity
  *
  * @author Stanislav Vetlovskiy <mrerliz@gmail.com>
  */
-class HardwareServerEntity
+class HardwareServerEntity implements JsonSerializable
 {
     /** @var int */
     private $daemonPort;
@@ -51,6 +53,37 @@ class HardwareServerEntity
     public function __toString()
     {
         return $this->host;
+    }
+
+    /**
+     * @return array
+     */
+    public function __toArray()
+    {
+        $virtualServerArray = [];
+        foreach ($this->getVirtualServers() as $virtualServer) {
+            $virtualServerArray[] = $virtualServer->__toArray();
+        }
+
+        return [
+            'daemonPort'            => $this->getDaemonPort(),
+            'defaultOSTemplate'     => $this->getDefaultOSTemplate(),
+            'defaultServerTemplate' => $this->getDefaultServerTemplate(),
+            'description'           => $this->getDescription(),
+            'host'                  => $this->getHost(),
+            'id'                    => $this->getId(),
+            'useSSL'                => $this->isUseSSL(),
+            'vSwap'                 => $this->isVSwap(),
+            'virtualServers'        => $virtualServerArray,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return $this->__toArray();
     }
 
     /**

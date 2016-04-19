@@ -64,28 +64,7 @@ class VirtualServerEntityTest extends PHPUnit_Framework_TestCase
     public function testSettersAndGetters(array $entityData)
     {
         $virtualServer = new VirtualServerEntity();
-        $virtualServer
-            ->setCpuLimit($entityData['cpuLimit'])
-            ->setCpuUnits($entityData['cpuUnits'])
-            ->setCpus($entityData['cpus'])
-            ->setDailyBackup($entityData['dailyBackup'])
-            ->setDescription($entityData['description'])
-            ->setDiskSpace($entityData['diskSpace'])
-            ->setExpirationDate($entityData['expirationDate'])
-            ->setHardwareServerId($entityData['hardwareServerId'])
-            ->setHostName($entityData['hostName'])
-            ->setId($entityData['id'])
-            ->setIdentity($entityData['identity'])
-            ->setIpAddress($entityData['ipAddress'])
-            ->setMemory($entityData['memory'])
-            ->setNameServer($entityData['nameserver'])
-            ->setOriginalOSTemplate($entityData['origOSTemplate'])
-            ->setOriginalServerTemplate($entityData['origServerTemplate'])
-            ->setSearchDomain($entityData['searchDomain'])
-            ->setStartOnBoot($entityData['startOnBoot'])
-            ->setState($entityData['state'])
-            ->setUserId($entityData['userId'])
-            ->setVSwap($entityData['vswap']);
+        $virtualServer = $this->fillEntityByData($virtualServer, $entityData);
 
         $this->assertTrue(is_int($virtualServer->getCpuLimit()));
         $this->assertEquals($entityData['cpuLimit'], $virtualServer->getCpuLimit());
@@ -204,5 +183,76 @@ class VirtualServerEntityTest extends PHPUnit_Framework_TestCase
     {
         $virtualServer = new VirtualServerEntity();
         $virtualServer->setExpirationDate('1970-01-01');
+    }
+
+    /**
+     * @dataProvider entityProvider
+     *˚
+     * @param array $entityData
+     */
+    public function testToArray(array $entityData)
+    {
+        $virtualServer = new VirtualServerEntity();
+        $virtualServer = $this->fillEntityByData($virtualServer, $entityData);
+
+        $arrayData = $virtualServer->__toArray();
+
+        $this->assertTrue(is_array($arrayData));
+        $this->assertCount(21, $arrayData);
+        $this->assertEquals($entityData['hostName'], $arrayData['hostName']);
+    }
+
+    /**
+     * @dataProvider entityProvider
+     *
+     * @param array $entityData
+     */
+    public function testJsonSerialize(array $entityData)
+    {
+        $virtualServer = new VirtualServerEntity();
+        $virtualServer = $this->fillEntityByData($virtualServer, $entityData);
+
+        $this->assertTrue(is_array($virtualServer->jsonSerialize()));
+        $this->assertNotEmpty($virtualServer->jsonSerialize());
+
+        $serverJson = json_encode($virtualServer);
+        $this->assertEmpty(json_last_error());
+        $this->assertTrue(is_string($serverJson));
+        $this->assertNotEmpty($serverJson);
+        $this->assertContains('hostName', $serverJson);
+    }
+
+    /**
+     * @param VirtualServerEntity $entity
+     * @param array               $entityData
+     *
+     * @return VirtualServerEntity
+     */
+    private function fillEntityByData(VirtualServerEntity $entity, array $entityData)
+    {
+        $entity
+            ->setCpuLimit($entityData['cpuLimit'])
+            ->setCpuUnits($entityData['cpuUnits'])
+            ->setCpus($entityData['cpus'])
+            ->setDailyBackup($entityData['dailyBackup'])
+            ->setDescription($entityData['description'])
+            ->setDiskSpace($entityData['diskSpace'])
+            ->setExpirationDate($entityData['expirationDate'])
+            ->setHardwareServerId($entityData['hardwareServerId'])
+            ->setHostName($entityData['hostName'])
+            ->setId($entityData['id'])
+            ->setIdentity($entityData['identity'])
+            ->setIpAddress($entityData['ipAddress'])
+            ->setMemory($entityData['memory'])
+            ->setNameServer($entityData['nameserver'])
+            ->setOriginalOSTemplate($entityData['origOSTemplate'])
+            ->setOriginalServerTemplate($entityData['origServerTemplate'])
+            ->setSearchDomain($entityData['searchDomain'])
+            ->setStartOnBoot($entityData['startOnBoot'])
+            ->setState($entityData['state'])
+            ->setUserId($entityData['userId'])
+            ->setVSwap($entityData['vswap']);
+
+        return $entity;
     }
 }

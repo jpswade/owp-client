@@ -126,4 +126,67 @@ class HardwareServerEntityTest extends PHPUnit_Framework_TestCase
         ]);
         $this->assertCount(2, $hardwareServer->getVirtualServers());
     }
+
+    /**
+     * @dataProvider entityProvider
+     *
+     * @param array $entityData
+     */
+    public function testToArray(array $entityData)
+    {
+        $hardwareServer = new HardwareServerEntity();
+        $hardwareServer
+            ->setDaemonPort($entityData['daemonPort'])
+            ->setDefaultOSTemplate($entityData['defaultOsTemplate'])
+            ->setDefaultServerTemplate($entityData['defaultServerTemplate'])
+            ->setDescription($entityData['description'])
+            ->setHost($entityData['host'])
+            ->setId($entityData['id'])
+            ->setUseSSL($entityData['useSsl'])
+            ->setVSwap($entityData['vswap']);
+
+        $virtualServer = new VirtualServerEntity();
+        $virtualServer->setHostName('localhost');
+
+        $hardwareServer->setVirtualServers([
+            $virtualServer,
+            new VirtualServerEntity(),
+        ]);
+
+        $arrayData = $hardwareServer->__toArray();
+
+        $this->assertTrue(is_array($arrayData));
+        $this->assertCount(9, $arrayData);
+        $this->assertEquals($entityData['host'], $arrayData['host']);
+        $this->assertCount(2, $arrayData['virtualServers']);
+        $this->assertEquals('localhost', $arrayData['virtualServers'][0]['hostName']);
+    }
+
+    /**
+     * @dataProvider entityProvider
+     *
+     * @param array $entityData
+     */
+    public function testJsonSerialize(array $entityData)
+    {
+        $hardwareServer = new HardwareServerEntity();
+        $hardwareServer
+            ->setDaemonPort($entityData['daemonPort'])
+            ->setDefaultOSTemplate($entityData['defaultOsTemplate'])
+            ->setDefaultServerTemplate($entityData['defaultServerTemplate'])
+            ->setDescription($entityData['description'])
+            ->setHost($entityData['host'])
+            ->setId($entityData['id'])
+            ->setUseSSL($entityData['useSsl'])
+            ->setVSwap($entityData['vswap']);
+
+        $this->assertTrue(is_array($hardwareServer->jsonSerialize()));
+        $this->assertNotEmpty($hardwareServer->jsonSerialize());
+
+        $serverJson = json_encode($hardwareServer);
+        $this->assertEmpty(json_last_error());
+        $this->assertTrue(is_string($serverJson));
+        $this->assertNotEmpty($serverJson);
+        $this->assertContains('virtualServers', $serverJson);
+    }
 }

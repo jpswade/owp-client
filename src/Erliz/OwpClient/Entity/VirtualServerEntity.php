@@ -13,13 +13,14 @@ namespace Erliz\OwpClient\Entity;
 
 use DateTime;
 use Erliz\OwpClient\Exception\InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * Class VirtualServerEntity
  *
  * @author Stanislav Vetlovskiy <mrerliz@gmail.com>
  */
-class VirtualServerEntity
+class VirtualServerEntity implements JsonSerializable
 {
     const STATE_RUNNING = 'running';
     const STATE_STOPPED = 'stopped';
@@ -73,6 +74,44 @@ class VirtualServerEntity
     public function __toString()
     {
         return $this->hostName;
+    }
+
+    /**
+     * @return array
+     */
+    public function __toArray()
+    {
+        return [
+            'cpuLimit' => $this->getCpuLimit(),
+            'cpuUnits' => $this->getCpuUnits(),
+            'cpus' => $this->getCpus(),
+            'dailyBackup' => $this->isDailyBackup(),
+            'description' => $this->getDescription(),
+            'diskSpace' => $this->getDiskSpace(),
+            'expirationDate' => $this->getExpirationDate(),
+            'hardwareServerId' => $this->getHardwareServerId(),
+            'hostName' => $this->getHostName(),
+            'id' => $this->getId(),
+            'identity' => $this->getIdentity(),
+            'ipAddress' => $this->getIpAddress(),
+            'memory' => $this->getMemory(),
+            'nameServer' => $this->getNameServer(),
+            'originalOSTemplate' => $this->getOriginalOSTemplate(),
+            'originalServerTemplate' => $this->getOriginalServerTemplate(),
+            'searchDomain' => $this->getSearchDomain(),
+            'startOnBoot' => $this->isStartOnBoot(),
+            'state' => $this->getState(),
+            'userId' => $this->getUserId(),
+            'vSwap' => $this->getVSwap(),
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->__toArray();
     }
 
     /**
