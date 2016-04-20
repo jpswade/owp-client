@@ -1,7 +1,7 @@
 {
   "name": "erliz/owp-client",
   "description": "PHP client for OpenVZ web panel remote API",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "type": "lib",
   "license": "MIT",
   "authors": [
