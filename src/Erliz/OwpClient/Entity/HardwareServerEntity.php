@@ -66,6 +66,8 @@ class HardwareServerEntity implements JsonSerializable
         }
 
         return [
+            'allocatedMemory'       => $this->getAllocatedMemory(),
+            'allocatedDiskSpace'    => $this->getAllocatedDiskSpace(),
             'daemonPort'            => $this->getDaemonPort(),
             'defaultOSTemplate'     => $this->getDefaultOSTemplate(),
             'defaultServerTemplate' => $this->getDefaultServerTemplate(),
@@ -84,6 +86,32 @@ class HardwareServerEntity implements JsonSerializable
     public function jsonSerialize()
     {
         return $this->__toArray();
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllocatedMemory()
+    {
+        $allocatedMemory = 0;
+        foreach ($this->getVirtualServers() as $virtualServer) {
+            $allocatedMemory += $virtualServer->getMemory();
+        }
+
+        return $allocatedMemory;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllocatedDiskSpace()
+    {
+        $allocatedDisk = 0;
+        foreach ($this->getVirtualServers() as $virtualServer) {
+            $allocatedDisk += $virtualServer->getDiskSpace();
+        }
+
+        return $allocatedDisk;
     }
 
     /**
@@ -247,7 +275,7 @@ class HardwareServerEntity implements JsonSerializable
     }
 
     /**
-     * @return array
+     * @return VirtualServerEntity[]
      */
     public function getVirtualServers()
     {

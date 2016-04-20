@@ -156,7 +156,7 @@ class HardwareServerEntityTest extends PHPUnit_Framework_TestCase
         $arrayData = $hardwareServer->__toArray();
 
         $this->assertTrue(is_array($arrayData));
-        $this->assertCount(9, $arrayData);
+        $this->assertCount(11, $arrayData);
         $this->assertEquals($entityData['host'], $arrayData['host']);
         $this->assertCount(2, $arrayData['virtualServers']);
         $this->assertEquals('localhost', $arrayData['virtualServers'][0]['hostName']);
@@ -188,5 +188,51 @@ class HardwareServerEntityTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_string($serverJson));
         $this->assertNotEmpty($serverJson);
         $this->assertContains('virtualServers', $serverJson);
+    }
+
+    /**
+     * Test allocated memory get method
+     */
+    public function testGetAllocatedMemory()
+    {
+        $hardwareServer = new HardwareServerEntity();
+        $vs1 = new VirtualServerEntity();
+        $vs1->setMemory(1500);
+        $vs2 = new VirtualServerEntity();
+        $vs2->setMemory(3000);
+        $vs3 = new VirtualServerEntity();
+        $vs3->setMemory(12000);
+
+        $hardwareServer->setVirtualServers([
+            $vs1,
+            $vs2,
+            $vs3,
+        ]);
+
+        $this->assertNotEmpty($hardwareServer->getAllocatedMemory());
+        $this->assertEquals(1500 + 3000 + 12000, $hardwareServer->getAllocatedMemory());
+    }
+
+    /**
+     * Test allocated memory get method
+     */
+    public function testGetAllocatedDiskSpace()
+    {
+        $hardwareServer = new HardwareServerEntity();
+        $vs1 = new VirtualServerEntity();
+        $vs1->setDiskSpace(2000);
+        $vs2 = new VirtualServerEntity();
+        $vs2->setDiskSpace(5000);
+        $vs3 = new VirtualServerEntity();
+        $vs3->setDiskSpace(100000);
+
+        $hardwareServer->setVirtualServers([
+            $vs1,
+            $vs2,
+            $vs3,
+        ]);
+
+        $this->assertNotEmpty($hardwareServer->getAllocatedDiskSpace());
+        $this->assertEquals(2000 + 5000 + 100000, $hardwareServer->getAllocatedDiskSpace());
     }
 }
