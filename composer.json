@@ -1,9 +1,14 @@
 {
   "name": "erliz/owp-client",
   "description": "PHP client for OpenVZ web panel remote API",
-  "version": "1.1.1",
-  "type": "lib",
+  "type": "library",
   "license": "MIT",
+  "homepage": "https://github.com/Erliz/owp-client",
+  "keywords": [
+    "openvz",
+    "openvz-web-panel",
+    "owp-api"
+  ],
   "authors": [
     {
       "name": "Stanislav Vetlovskiy",
@@ -20,12 +25,12 @@
   },
   "autoload": {
     "psr-4": {
-      "": "src/"
+      "Erliz\\OwpClient\\": "src/Erliz/OwpClient/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "": "tests/"
+      "Erliz\\OwpClient\\": "tests/Erliz/OwpClient/"
     }
   },
   "minimum-stability": "stable"
