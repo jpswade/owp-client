@@ -66,6 +66,35 @@ class ClientTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test getHardwareServers
+     */
+    public function testGetHardwareServersWithVirtualServers()
+    {
+        $owp = $this->createClient();
+        $owp->method('makeRequest')
+            ->will(
+                $this->returnValueMap([
+                    [
+                        'hardware_servers/list',
+                        simplexml_load_file(__DIR__.'/Fixture/hardware_servers__list__one.xml'),
+                    ],
+                    [
+                        'hardware_servers/virtual_servers?id=4',
+                        simplexml_load_file(__DIR__.'/Fixture/hardware_servers__virtual_servers__id_4.xml'),
+                    ],
+                ])
+            );
+
+        $servers = $owp->getHardwareServers(true);
+        $this->assertTrue(is_array($servers));
+        $this->assertCount(1, $servers);
+        /** @var HardwareServerEntity $server */
+        $server = $servers[0];
+        $this->assertNotEmpty($server->getVirtualServers());
+        $this->assertInstanceOf('Erliz\OwpClient\Entity\VirtualServerEntity', $server->getVirtualServers()[0]);
+    }
+
+    /**
      * Test getVirtualServersByHardwareServerId
      */
     public function testGetVirtualServersByHardwareServerId()
@@ -119,7 +148,7 @@ class ClientTest extends PHPUnit_Framework_TestCase
                     [
                         [
                             'hardware_servers/list',
-                            simplexml_load_file(__DIR__.'/Fixture/mock__hardware_servers__list.xml'),
+                            simplexml_load_file(__DIR__.'/Fixture/hardware_servers__list__one.xml'),
                         ],
                         [
                             'hardware_servers/virtual_servers?id=4',

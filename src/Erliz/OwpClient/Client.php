@@ -52,15 +52,23 @@ class Client
     }
 
     /**
-     * @return HardwareServerEntity[]
+     * @param bool $fetchVirtualServers
+     *
+     * @return Entity\HardwareServerEntity[]
      * @throws ClientException
      */
-    public function getHardwareServers()
+    public function getHardwareServers($fetchVirtualServers = false)
     {
         $hardwareServers = [];
         $response = $this->makeRequest('hardware_servers/list');
         foreach ($response->hardware_server as $node) {
-            $hardwareServers[] = $this->generateHardwareServerEntity($node);
+            $hardwareServer = $this->generateHardwareServerEntity($node);
+            if ($fetchVirtualServers) {
+                $hardwareServer->setVirtualServers(
+                    $this->getVirtualServersByHardwareServerId($hardwareServer->getId())
+                );
+            }
+            $hardwareServers[] = $hardwareServer;
         }
 
         return $hardwareServers;
