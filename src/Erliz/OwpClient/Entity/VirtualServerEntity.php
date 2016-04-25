@@ -68,6 +68,9 @@ class VirtualServerEntity implements JsonSerializable
     /** @var int */
     private $vSwap;
 
+    /** @var VirtualServerStatsEntity */
+    private $stats;
+
     /**
      * @return string
      */
@@ -579,6 +582,26 @@ class VirtualServerEntity implements JsonSerializable
     public function getVSwap()
     {
         return $this->vSwap;
+    }
+
+    /**
+     * @param VirtualServerStatsEntity $stats
+     *
+     * @return $this
+     */
+    public function setStats(VirtualServerStatsEntity $stats)
+    {
+        $this->stats = $stats;
+
+        return $this;
+    }
+
+    /**
+     * @return VirtualServerStatsEntity
+     */
+    public function getStats()
+    {
+        return $this->stats;
     }
 
     /**

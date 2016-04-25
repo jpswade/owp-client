@@ -58,44 +58,58 @@ class HardwareServerEntityTest extends PHPUnit_Framework_TestCase
      */
     public function testSettersAndGetters(array $entityData)
     {
-        $hardwareServer = new HardwareServerEntity();
-        $hardwareServer
-            ->setDaemonPort($entityData['daemonPort'])
-            ->setDefaultOSTemplate($entityData['defaultOsTemplate'])
-            ->setDefaultServerTemplate($entityData['defaultServerTemplate'])
-            ->setDescription($entityData['description'])
-            ->setHost($entityData['host'])
-            ->setId($entityData['id'])
-            ->setUseSSL($entityData['useSsl'])
-            ->setVSwap($entityData['vswap']);
+        $entity = new HardwareServerEntity();
 
-        $this->assertTrue(is_int($hardwareServer->getDaemonPort()));
-        $this->assertEquals($entityData['daemonPort'], $hardwareServer->getDaemonPort());
+        $this->assertSame($entity, $entity->setDaemonPort($entityData['daemonPort']));
+        $this->assertTrue(is_int($entity->getDaemonPort()));
+        $this->assertEquals($entityData['daemonPort'], $entity->getDaemonPort());
 
-        $this->assertTrue(is_string($hardwareServer->getDefaultOSTemplate()));
-        $this->assertEquals($entityData['defaultOsTemplate'], $hardwareServer->getDefaultOSTemplate());
+        $this->assertSame($entity, $entity->setDefaultOSTemplate($entityData['defaultOsTemplate']));
+        $this->assertTrue(is_string($entity->getDefaultOSTemplate()));
+        $this->assertEquals($entityData['defaultOsTemplate'], $entity->getDefaultOSTemplate());
 
-        $this->assertTrue(is_string($hardwareServer->getDefaultServerTemplate()));
-        $this->assertEquals($entityData['defaultServerTemplate'], $hardwareServer->getDefaultServerTemplate());
+        $this->assertSame($entity, $entity->setDefaultServerTemplate($entityData['defaultServerTemplate']));
+        $this->assertTrue(is_string($entity->getDefaultServerTemplate()));
+        $this->assertEquals($entityData['defaultServerTemplate'], $entity->getDefaultServerTemplate());
 
-        $this->assertTrue(is_string($hardwareServer->getDescription()));
-        $this->assertEquals($entityData['description'], $hardwareServer->getDescription());
+        $this->assertSame($entity, $entity->setDescription($entityData['description']));
+        $this->assertTrue(is_string($entity->getDescription()));
+        $this->assertEquals($entityData['description'], $entity->getDescription());
 
-        $this->assertTrue(is_string($hardwareServer->getHost()));
-        $this->assertEquals($entityData['host'], $hardwareServer->getHost());
+        $this->assertSame($entity, $entity->setHost($entityData['host']));
+        $this->assertTrue(is_string($entity->getHost()));
+        $this->assertEquals($entityData['host'], $entity->getHost());
 
-        $this->assertTrue(is_int($hardwareServer->getId()));
-        $this->assertEquals($entityData['id'], $hardwareServer->getId());
+        $this->assertSame($entity, $entity->setId($entityData['id']));
+        $this->assertTrue(is_int($entity->getId()));
+        $this->assertEquals($entityData['id'], $entity->getId());
 
-        $this->assertTrue(is_bool($hardwareServer->isUseSSL()));
-        $this->assertEquals($entityData['useSsl'], $hardwareServer->isUseSSL());
+        $this->assertSame($entity, $entity->setUseSSL($entityData['useSsl']));
+        $this->assertTrue(is_bool($entity->isUseSSL()));
+        $this->assertEquals($entityData['useSsl'], $entity->isUseSSL());
 
-        $this->assertTrue(is_bool($hardwareServer->isVSwap()));
-        $this->assertEquals($entityData['vswap'], $hardwareServer->isVSwap());
+        $this->assertSame($entity, $entity->setVSwap($entityData['vswap']));
+        $this->assertTrue(is_bool($entity->isVSwap()));
+        $this->assertEquals($entityData['vswap'], $entity->isVSwap());
     }
 
     /**
-     * test virtual servers property
+     * Test hardware stats property
+     */
+    public function testStatsProp()
+    {
+        $entity = new HardwareServerEntity();
+
+        $stats = new HardwareServerStatsEntity();
+        $stats->setOSVersion('test_OS');
+
+        $this->assertSame($entity, $entity->setStats($stats));
+        $this->assertInstanceOf(HardwareServerStatsEntity::class, $entity->getStats());
+        $this->assertSame($stats, $entity->getStats());
+    }
+
+    /**
+     * Test virtual servers property
      */
     public function testVirtualServersProp()
     {

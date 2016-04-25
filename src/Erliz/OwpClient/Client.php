@@ -11,10 +11,18 @@
 
 namespace Erliz\OwpClient;
 
+use Erliz\OwpClient\Entity\DiskUsageMountEntity;
+use Erliz\OwpClient\Entity\DiskUsageStatEntity;
 use Erliz\OwpClient\Entity\HardwareServerEntity;
+use Erliz\OwpClient\Entity\HardwareServerStatsEntity;
+use Erliz\OwpClient\Entity\RamUsageStatEntity;
 use Erliz\OwpClient\Entity\VirtualServerEntity;
+use Erliz\OwpClient\Entity\VirtualServerStatsEntity;
 use Erliz\OwpClient\Exception\ClientException;
+use Erliz\OwpClient\Exception\InvalidArgumentException;
+use Erliz\OwpClient\Parser\MemoryParser;
 use SimpleXMLElement;
+use stdClass;
 
 /**
  * Class Client
@@ -52,54 +60,96 @@ class Client
     }
 
     /**
+     * @param int  $id
      * @param bool $fetchVirtualServers
+     * @param bool $fetchStats
      *
-     * @return Entity\HardwareServerEntity[]
+     * @return HardwareServerEntity
      * @throws ClientException
      */
-    public function getHardwareServers($fetchVirtualServers = false)
+    public function getHardwareServerById($id, $fetchVirtualServers = false, $fetchStats = false)
+    {
+        $response = $this->makeRequest(sprintf('hardware_servers/get?id=%d', $id));
+
+        return $this->getHardwareServerFromNode($response, $fetchVirtualServers, $fetchStats);
+    }
+
+    /**
+     * @param bool $fetchVirtualServers
+     * @param bool $fetchStats
+     *
+     * @return HardwareServerEntity[]
+     * @throws ClientException
+     */
+    public function getHardwareServers($fetchVirtualServers = false, $fetchStats = false)
     {
         $hardwareServers = [];
         $response = $this->makeRequest('hardware_servers/list');
         foreach ($response->hardware_server as $node) {
-            $hardwareServer = $this->generateHardwareServerEntity($node);
-            if ($fetchVirtualServers) {
-                $hardwareServer->setVirtualServers(
-                    $this->getVirtualServersByHardwareServerId($hardwareServer->getId())
-                );
-            }
-            $hardwareServers[] = $hardwareServer;
+            $hardwareServers[] = $this->getHardwareServerFromNode($node, $fetchVirtualServers, $fetchStats);
         }
 
         return $hardwareServers;
     }
 
     /**
-     * @param int $id
+     * @param SimpleXMLElement $node
+     * @param bool             $fetchVirtualServers
+     * @param bool             $fetchStats
      *
+     * @return HardwareServerEntity
+     */
+    private function getHardwareServerFromNode($node, $fetchVirtualServers = false, $fetchStats = false)
+    {
+        $hardwareServer = $this->generateHardwareServerEntity($node);
+        if ($fetchVirtualServers) {
+            $hardwareServer->setVirtualServers(
+                $this->getVirtualServersByHardwareServerId($hardwareServer->getId(), $fetchStats)
+            );
+        }
+        if ($fetchStats) {
+            $hardwareServer->setStats(
+                $this->getHardwareServerStatsById($hardwareServer->getId())
+            );
+        }
+
+        return $hardwareServer;
+    }
+
+    /**
+     * @param int  $id
+     * @param bool $fetchStats
+     * 
      * @return VirtualServerEntity[]
      * @throws ClientException
      */
-    public function getVirtualServersByHardwareServerId($id)
+    public function getVirtualServersByHardwareServerId($id, $fetchStats = false)
     {
         $virtualServers = [];
         $response = $this->makeRequest(sprintf('hardware_servers/virtual_servers?id=%d', $id));
         foreach ($response->virtual_server as $node) {
-            $virtualServers[] = $this->generateVirtualServerEntity($node);
+            $virtualServer = $this->generateVirtualServerEntity($node);
+            if ($fetchStats) {
+                $virtualServer->setStats(
+                    $this->getVirtualServerStatsById($virtualServer->getId())
+                );
+            }
+            $virtualServers[] = $virtualServer;
         }
 
         return $virtualServers;
     }
 
     /**
+     * @param bool $fetchStats
      * @return VirtualServerEntity[]
      */
-    public function getAllVirtualServers()
+    public function getAllVirtualServers($fetchStats = false)
     {
         $virtualServers = [];
         /** @var HardwareServerEntity $hardwareServer */
         foreach ($this->getHardwareServers() as $hardwareServer) {
-            $hwVtServers = $this->getVirtualServersByHardwareServerId($hardwareServer->getId());
+            $hwVtServers = $this->getVirtualServersByHardwareServerId($hardwareServer->getId(), $fetchStats);
             $virtualServers = array_merge($virtualServers, $hwVtServers);
         }
 
@@ -108,13 +158,22 @@ class Client
 
     /**
      * @param string $method
+     * @param string $responseType
      *
-     * @return mixed
+     * @return SimpleXMLElement|stdClass
      * @throws ClientException
      */
-    protected function makeRequest($method)
+    protected function makeRequest($method, $responseType = 'xml')
     {
         $curlHandler = curl_init();
+
+        if ($responseType == 'xml') {
+            $url = sprintf("%s://%s:%s/api/%s", $this->scheme, $this->host, $this->port, $method);
+        } elseif ($responseType == 'json') {
+            $url = sprintf("%s://%s:%s/admin/%s", $this->scheme, $this->host, $this->port, $method);
+        } else {
+            throw new InvalidArgumentException(sprintf('Unknown response type "%s"', $responseType));
+        }
 
         curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curlHandler, CURLOPT_VERBOSE, 0);
@@ -123,7 +182,7 @@ class Client
         curl_setopt($curlHandler, CURLOPT_HTTPHEADER, []);
         curl_setopt($curlHandler, CURLOPT_HEADER, 0);
         curl_setopt($curlHandler, CURLOPT_POST, 0);
-        curl_setopt($curlHandler, CURLOPT_URL, sprintf("%s://%s:%s/api/%s", $this->scheme, $this->host, $this->port, $method));
+        curl_setopt($curlHandler, CURLOPT_URL, $url);
         if (!empty($this->user) && !empty($this->pass)) {
             curl_setopt($curlHandler, CURLOPT_USERPWD, sprintf('%s:%s', $this->user, $this->pass));
         }
@@ -134,7 +193,21 @@ class Client
             throw new ClientException(sprintf('cURL Error: %s', $curlError));
         }
         curl_close($curlHandler);
-        $doc = simplexml_load_string($result);
+        if ($responseType == 'xml') {
+            $doc = simplexml_load_string($result);
+
+            dump($result);
+            if ($doc->code == 'object_not_found') {
+                throw new ClientException(sprintf('Server error response with message "%s"', $doc->message));
+            }
+        } elseif ($responseType == 'json') {
+            $doc = json_decode($result);
+            if ($doc->success === false) {
+                throw new ClientException(sprintf('Fail to get valid response on "%s" method', $method));
+            }
+        } else {
+            throw new InvalidArgumentException(sprintf('Unknown response type "%s"', $responseType));
+        }
 
         return $doc;
     }
@@ -218,4 +291,126 @@ class Client
         return filter_var((string) $prop['nil'], FILTER_VALIDATE_BOOLEAN);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return HardwareServerStatsEntity
+     */
+    private function getHardwareServerStatsById($id)
+    {
+        $response = $this->makeRequest(
+            sprintf(
+                'hardware-servers/get_stats?id=%d&_dc=%s',
+                $id,
+                time()
+            ),
+            'json'
+        );
+        $diskString = 'Disk usage, partition ';
+        $diskUsageStat = new DiskUsageStatEntity();
+        $stats = new HardwareServerStatsEntity();
+        $stats->setDiskUsage($diskUsageStat);
+        foreach ($response->data as $property) {
+            switch ($property->parameter) {
+                case 'OS version':
+                    if ($property->value !== '-') {
+                        $stats->setOSVersion(str_replace(["\n", "\r"], '', $property->value));
+                    }
+                    break;
+                case 'CPU load average':
+                    if ($property->value !== '-') {
+                        $stats->setCPULoadAverage(
+                            array_map(
+                                'floatval',
+                                explode(' ', $property->value)
+                            )
+                        );
+                    }
+                    break;
+                case (strpos($property->parameter, $diskString) !== false):
+                    $stat = MemoryParser::parse($property->value->text);
+                    $diskMount = new DiskUsageMountEntity();
+                    $diskMount
+                        ->setMountPoint(str_replace($diskString, '', $property->parameter))
+                        ->setUsagePercent($stat['percent'])
+                        ->setTotalSize($stat['total'])
+                        ->setFreeSize($stat['free'])
+                        ->setUsedSize($stat['used']);
+                    $diskUsageStat->addMountPoint($diskMount);
+                    break;
+                case 'Memory usage':
+                    $stat = MemoryParser::parse($property->value->text);
+                    $ramUsage = new RamUsageStatEntity();
+                    $ramUsage
+                        ->setUsagePercent($stat['percent'])
+                        ->setTotalSize($stat['total'])
+                        ->setFreeSize($stat['free'])
+                        ->setUsedSize($stat['used']);
+                    $stats->setRamUsage($ramUsage);
+                    break;
+                default:
+                    throw new InvalidArgumentException(sprintf('Unknown property "%s"'), $property->parameter);
+            }
+        }
+
+        return $stats;
+    }
+
+    /**
+     * @param int $id
+     *
+     * @return VirtualServerStatsEntity
+     */
+    private function getVirtualServerStatsById($id)
+    {
+        $response = $this->makeRequest(
+            sprintf(
+                'virtual-servers/get_stats?id=%d&_dc=%s',
+                $id,
+                time()
+            ),
+            'json'
+        );
+        $diskUsageStat = new DiskUsageStatEntity();
+        $stats = new VirtualServerStatsEntity();
+        $stats->setDiskUsage($diskUsageStat);
+        foreach ($response->data as $property) {
+            switch ($property->parameter) {
+                case 'CPU load average':
+                    if ($property->value !== '-') {
+                        $stats->setCPULoadAverage([(float) $property->value->percent]);
+                    }
+                    break;
+                case 'Disk usage':
+                    if ($property->value !== '-') {
+                        $stat = MemoryParser::parse($property->value->text);
+                        $diskMount = new DiskUsageMountEntity();
+                        $diskMount
+                            ->setMountPoint('/')
+                            ->setUsagePercent($stat['percent'])
+                            ->setTotalSize($stat['total'])
+                            ->setFreeSize($stat['free'])
+                            ->setUsedSize($stat['used']);
+                        $diskUsageStat->addMountPoint($diskMount);
+                    }
+                    break;
+                case 'Memory usage':
+                    if ($property->value !== '-') {
+                        $stat = MemoryParser::parse($property->value->text);
+                        $ramUsage = new RamUsageStatEntity();
+                        $ramUsage
+                            ->setUsagePercent($stat['percent'])
+                            ->setTotalSize($stat['total'])
+                            ->setFreeSize($stat['free'])
+                            ->setUsedSize($stat['used']);
+                        $stats->setRamUsage($ramUsage);
+                    }
+                    break;
+                default:
+                    throw new InvalidArgumentException(sprintf('Unknown property "%s"'), $property->parameter);
+            }
+        }
+
+        return $stats;
+    }
 }

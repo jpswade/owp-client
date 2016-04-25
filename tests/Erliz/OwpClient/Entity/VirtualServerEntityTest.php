@@ -223,6 +223,20 @@ class VirtualServerEntityTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test hardware stats property
+     */
+    public function testStatsProp()
+    {
+        $entity = new VirtualServerEntity();
+
+        $stats = new VirtualServerStatsEntity();
+
+        $this->assertSame($entity, $entity->setStats($stats));
+        $this->assertInstanceOf(VirtualServerStatsEntity::class, $entity->getStats());
+        $this->assertSame($stats, $entity->getStats());
+    }
+
+    /**
      * @param VirtualServerEntity $entity
      * @param array               $entityData
      *

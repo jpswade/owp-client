@@ -1,0 +1,13 @@
+{
+  "success": true,
+  "data": [
+    {
+      "value": "-",
+      "parameter": "OS version"
+    },
+    {
+      "value": "-",
+      "parameter": "CPU load average"
+    }
+  ]
+}

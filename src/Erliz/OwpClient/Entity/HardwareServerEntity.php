@@ -38,6 +38,8 @@ class HardwareServerEntity implements JsonSerializable
     private $vSwap;
     /** @var array */
     private $virtualServers;
+    /** @var HardwareServerStatsEntity */
+    private $stats;
 
     /**
      * HardwareServerEntity constructor.
@@ -306,5 +308,25 @@ class HardwareServerEntity implements JsonSerializable
         }
 
         return $this;
+    }
+
+    /**
+     * @param HardwareServerStatsEntity $stats
+     *
+     * @return $this
+     */
+    public function setStats(HardwareServerStatsEntity $stats)
+    {
+        $this->stats = $stats;
+
+        return $this;
+    }
+
+    /**
+     * @return HardwareServerStatsEntity
+     */
+    public function getStats()
+    {
+        return $this->stats;
     }
 }

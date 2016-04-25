@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "data": [
+    {
+      "value": "Linux 2.6.32-042stab106.4 x86_64\n",
+      "parameter": "OS version"
+    },
+    {
+      "value": "12.63, 9.51, 9.95",
+      "parameter": "CPU load average"
+    },
+    {
+      "value": {
+        "percent": 0.42,
+        "text": "42%, 395.1 MB of 991.8 MB / 545.6 MB free"
+      },
+      "parameter": "Disk usage, partition /"
+    },
+    {
+      "value": {
+        "percent": 0.2,
+        "text": "20%, 18.2 GB of 98.2 GB / 75 GB free"
+      },
+      "parameter": "Disk usage, partition /logs"
+    },
+    {
+      "value": {
+        "percent": 0.01,
+        "text": "1%, 3 MB of 1.9 GB / 1.8 GB free"
+      },
+      "parameter": "Disk usage, partition /tmp"
+    },
+    {
+      "value": {
+        "percent": 0.09,
+        "text": "9%, 835.3 MB of 9.7 GB / 8.4 GB free"
+      },
+      "parameter": "Disk usage, partition /usr"
+    },
+    {
+      "value": {
+        "percent": 0.1,
+        "text": "10%, 464.7 MB of 4.8 GB / 4.1 GB free"
+      },
+      "parameter": "Disk usage, partition /var"
+    },
+    {
+      "value": {
+        "percent": 0.01,
+        "text": "1%, 66.8 MB of 337.7 GB / 337.7 GB free"
+      },
+      "parameter": "Disk usage, partition /home"
+    },
+    {
+      "value": {
+        "percent": 0.69,
+        "text": "69%, 750.6 GB of 1.1 TB / 348.2 GB free"
+      },
+      "parameter": "Disk usage, partition /mnt/disk1"
+    },
+    {
+      "value": {
+        "percent": 0.27,
+        "text": "27%, 8.5 GB of 31.3 GB / 22.8 GB free"
+      },
+      "parameter": "Memory usage"
+    }
+  ]
+}

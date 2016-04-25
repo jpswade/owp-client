@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "data": [
+    {
+      "value": {
+        "percent": 0.01,
+        "text": "1%"
+      },
+      "parameter": "CPU load average"
+    },
+    {
+      "value": {
+        "percent": 0.239115295410156,
+        "text": "23%, 12 GB of 50 GB / 38 GB free"
+      },
+      "parameter": "Disk usage"
+    },
+    {
+      "value": {
+        "percent": 0.365431738024934,
+        "text": "36%, 2.2 GB of 6 GB / 3.8 GB free"
+      },
+      "parameter": "Memory usage"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "success": true,
+  "data": [
+    {
+      "value": "-",
+      "parameter": "CPU load average"
+    },
+    {
+      "value": "-",
+      "parameter": "Disk usage"
+    },
+    {
+      "value": "-",
+      "parameter": "Memory usage"
+    }
+  ]
+}

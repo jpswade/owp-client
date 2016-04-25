@@ -68,22 +68,27 @@ class ClientTest extends PHPUnit_Framework_TestCase
     /**
      * Test getHardwareServers
      */
+    public function testGetHardwareServer()
+    {
+        $id = 4;
+        $owp = $this->createClient();
+        $owp->expects($this->once())
+            ->method('makeRequest')
+            ->with($this->equalTo(sprintf('hardware_servers/get?id=%d', $id)))
+            ->will($this->returnValue(simplexml_load_file(__DIR__.'/Fixture/hardware_server.xml')));
+
+        $result = $owp->getHardwareServerById($id);
+        $this->assertInstanceOf('Erliz\OwpClient\Entity\HardwareServerEntity', $result);
+        $this->assertNotEmpty($result->getHost());
+        $this->assertNotEmpty($result->getId());
+    }
+
+    /**
+     * Test getHardwareServers
+     */
     public function testGetHardwareServersWithVirtualServers()
     {
-        $owp = $this->createClient();
-        $owp->method('makeRequest')
-            ->will(
-                $this->returnValueMap([
-                    [
-                        'hardware_servers/list',
-                        simplexml_load_file(__DIR__.'/Fixture/hardware_servers__list__one.xml'),
-                    ],
-                    [
-                        'hardware_servers/virtual_servers?id=4',
-                        simplexml_load_file(__DIR__.'/Fixture/hardware_servers__virtual_servers__id_4.xml'),
-                    ],
-                ])
-            );
+        $owp = $this->getMockClient();
 
         $servers = $owp->getHardwareServers(true);
         $this->assertTrue(is_array($servers));
@@ -148,11 +153,18 @@ class ClientTest extends PHPUnit_Framework_TestCase
                     [
                         [
                             'hardware_servers/list',
+                            'xml',
                             simplexml_load_file(__DIR__.'/Fixture/hardware_servers__list__one.xml'),
                         ],
                         [
                             'hardware_servers/virtual_servers?id=4',
+                            'xml',
                             simplexml_load_file(__DIR__.'/Fixture/hardware_servers__virtual_servers__id_4.xml'),
+                        ],
+                        [
+                            'virtual-servers/get_stats?id=259&_dc='.time(),
+                            'json',
+                            json_decode(__DIR__.'/Fixture/virtual_server__stats.json'),
                         ],
                     ]
                 )
