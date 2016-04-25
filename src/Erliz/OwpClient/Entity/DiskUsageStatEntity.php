@@ -148,6 +148,10 @@ class DiskUsageStatEntity implements JsonSerializable
      */
     public function getUsagePercent()
     {
+        if (empty($this->getTotalSize())) {
+            return 0;
+        }
+
         return (int) round($this->getUsedSize() / $this->getTotalSize() * 100);
     }
 }
