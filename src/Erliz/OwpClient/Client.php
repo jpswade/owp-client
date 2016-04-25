@@ -195,8 +195,6 @@ class Client
         curl_close($curlHandler);
         if ($responseType == 'xml') {
             $doc = simplexml_load_string($result);
-
-            dump($result);
             if ($doc->code == 'object_not_found') {
                 throw new ClientException(sprintf('Server error response with message "%s"', $doc->message));
             }
