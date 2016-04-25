@@ -1,3 +1,4 @@
 /vendor/
 /phpunit_report/
 composer.lock
+coverage.xml
