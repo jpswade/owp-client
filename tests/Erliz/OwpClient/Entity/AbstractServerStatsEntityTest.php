@@ -41,8 +41,7 @@ class AbstractServerStatsEntityTest extends PHPUnit_Framework_TestCase
     public function testProperties(array $testData)
     {
         /** @var AbstractServerStatsEntity $entity */
-        $entity = $this->getMock('Erliz\OwpClient\Entity\AbstractServerStatsEntity', null);
-
+        $entity = $this->getMockForAbstractClass(AbstractServerStatsEntity::class);
         $this->assertTrue(is_array($entity->__toArray()));
 
         $mountEntity = new DiskUsageMountEntity();

@@ -42,7 +42,7 @@ class AbstractMemoryEntityTest extends PHPUnit_Framework_TestCase
     public function testProperties(array $testData)
     {
         /** @var AbstractMemoryEntity $entity */
-        $entity = $this->getMock('Erliz\OwpClient\Entity\AbstractMemoryEntity', null);
+        $entity = $this->getMockForAbstractClass(AbstractMemoryEntity::class);
 
         $this->assertTrue(is_array($entity->__toArray()));
 

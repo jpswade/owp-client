@@ -149,27 +149,29 @@ class ClientTest extends PHPUnit_Framework_TestCase
         $client
             ->method('makeRequest')
             ->will(
-                $this->returnValueMap(
-                    [
-                        [
-                            'hardware_servers/list',
-                            'xml',
-                            simplexml_load_file(__DIR__.'/Fixture/hardware_servers__list__one.xml'),
-                        ],
-                        [
-                            'hardware_servers/virtual_servers?id=4',
-                            'xml',
-                            simplexml_load_file(__DIR__.'/Fixture/hardware_servers__virtual_servers__id_4.xml'),
-                        ],
-                        [
-                            'virtual-servers/get_stats?id=259&_dc='.time(),
-                            'json',
-                            json_decode(__DIR__.'/Fixture/virtual_server__stats.json'),
-                        ],
-                    ]
-                )
+                $this->returnCallback([$this, 'getMockClientResponses'])
             );
 
         return $client;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMockClientResponses()
+    {
+        $args = func_get_args();
+
+        if ($args[0] == 'hardware_servers/list') {
+            return simplexml_load_file(__DIR__.'/Fixture/hardware_servers__list__one.xml');
+        } elseif (preg_match('/hardware_servers\/virtual_servers\?id=*/', $args[0])) {
+            return simplexml_load_file(__DIR__.'/Fixture/hardware_servers__virtual_servers__id_4.xml');
+        } elseif (preg_match('/hardware-servers\/get_stats\?id=[\d]+&_dc=*/', $args[0])) {
+            return json_decode(file_get_contents(__DIR__.'/Fixture/hardware_server__stats.json'));
+        } elseif (preg_match('/virtual-servers\/get_stats\?id=[\d]+&_dc=*/', $args[0])) {
+            return json_decode(file_get_contents(__DIR__.'/Fixture/virtual_server__stats.json'));
+        }
+
+        return null;
     }
 }
