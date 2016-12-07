@@ -56,7 +56,7 @@ class MemoryParser
     {
         $multiplier = 1;
         $step = 1024;
-        switch (strtoupper($string)) {
+        switch ($string) {
             case 'TB':
                 $multiplier *= $step;
             case 'GB':
@@ -65,6 +65,7 @@ class MemoryParser
                 $multiplier *= 1;
                 break;
             case 'B':
+            case 'Bytes':
                 $multiplier /= 1024;
             case 'KB':
                 $multiplier /= 1024;

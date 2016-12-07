@@ -68,6 +68,10 @@ class MemoryParserTest extends PHPUnit_Framework_TestCase
                 '0%, 1024 B of 1 MB / 1023 KB free',
                 self::generateExpectedArray(0, 0, 1, 1),
             ],
+            [
+                '100%, 8 GB of 8 GB / 0 Bytes free',
+                self::generateExpectedArray(100, 8192, 8192, 0),
+            ],
         ];
     }
 
