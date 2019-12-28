@@ -372,9 +372,9 @@ class Client
     }
 
     /**
-     * @param $method
-     * @param $responseType
-     * @param $result
+     * @param string $method
+     * @param string $responseType
+     * @param string $result
      * @return mixed|SimpleXMLElement
      * @throws ClientException
      */
@@ -398,12 +398,12 @@ class Client
     }
 
     /**
-     * @param $method
-     * @param $responseType
+     * @param string $method
+     * @param string $responseType
      * @return bool|string
      * @throws ClientException
      */
-    public function getResult($method, $responseType)
+    public function getResult($method, $responseType = 'xml')
     {
         $curlHandler = curl_init();
 
