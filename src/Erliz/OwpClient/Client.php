@@ -163,7 +163,7 @@ class Client
      * @return SimpleXMLElement|stdClass
      * @throws ClientException
      */
-    protected function makeRequest($method, $responseType = 'xml')
+    public function makeRequest($method, $responseType = 'xml')
     {
         $curlHandler = curl_init();
 
