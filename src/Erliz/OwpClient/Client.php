@@ -165,49 +165,8 @@ class Client
      */
     public function makeRequest($method, $responseType = 'xml')
     {
-        $curlHandler = curl_init();
-
-        if ($responseType == 'xml') {
-            $url = sprintf("%s://%s:%s/api/%s", $this->scheme, $this->host, $this->port, $method);
-        } elseif ($responseType == 'json') {
-            $url = sprintf("%s://%s:%s/admin/%s", $this->scheme, $this->host, $this->port, $method);
-        } else {
-            throw new InvalidArgumentException(sprintf('Unknown response type "%s"', $responseType));
-        }
-
-        curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curlHandler, CURLOPT_VERBOSE, 0);
-        curl_setopt($curlHandler, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($curlHandler, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, []);
-        curl_setopt($curlHandler, CURLOPT_HEADER, 0);
-        curl_setopt($curlHandler, CURLOPT_POST, 0);
-        curl_setopt($curlHandler, CURLOPT_URL, $url);
-        if (!empty($this->user) && !empty($this->pass)) {
-            curl_setopt($curlHandler, CURLOPT_USERPWD, sprintf('%s:%s', $this->user, $this->pass));
-        }
-        $result = curl_exec($curlHandler);
-        $curlError = curl_error($curlHandler);
-
-        if ($curlError) {
-            throw new ClientException(sprintf('cURL Error: %s', $curlError));
-        }
-        curl_close($curlHandler);
-        if ($responseType == 'xml') {
-            $doc = simplexml_load_string($result);
-            if ($doc->code == 'object_not_found') {
-                throw new ClientException(sprintf('Server error response with message "%s"', $doc->message));
-            }
-        } elseif ($responseType == 'json') {
-            $doc = json_decode($result);
-            if ($doc->success === false) {
-                throw new ClientException(sprintf('Fail to get valid response on "%s" method', $method));
-            }
-        } else {
-            throw new InvalidArgumentException(sprintf('Unknown response type "%s"', $responseType));
-        }
-
-        return $doc;
+        $result = $this->getResult($method, $responseType);
+        return $this->parseResult($method, $responseType, $result);
     }
 
     /**
@@ -410,5 +369,70 @@ class Client
         }
 
         return $stats;
+    }
+
+    /**
+     * @param $method
+     * @param $responseType
+     * @param $result
+     * @return mixed|SimpleXMLElement
+     * @throws ClientException
+     */
+    private function parseResult($method, $responseType, $result)
+    {
+        if ($responseType == 'xml') {
+            $doc = simplexml_load_string($result);
+            if ($doc->code == 'object_not_found') {
+                throw new ClientException(sprintf('Server error response with message "%s"', $doc->message));
+            }
+        } elseif ($responseType == 'json') {
+            $doc = json_decode($result);
+            if ($doc->success === false) {
+                throw new ClientException(sprintf('Fail to get valid response on "%s" method', $method));
+            }
+        } else {
+            throw new InvalidArgumentException(sprintf('Unknown response type "%s"', $responseType));
+        }
+
+        return $doc;
+    }
+
+    /**
+     * @param $method
+     * @param $responseType
+     * @return bool|string
+     * @throws ClientException
+     */
+    public function getResult($method, $responseType)
+    {
+        $curlHandler = curl_init();
+
+        if ($responseType == 'xml') {
+            $url = sprintf("%s://%s:%s/api/%s", $this->scheme, $this->host, $this->port, $method);
+        } elseif ($responseType == 'json') {
+            $url = sprintf("%s://%s:%s/admin/%s", $this->scheme, $this->host, $this->port, $method);
+        } else {
+            throw new InvalidArgumentException(sprintf('Unknown response type "%s"', $responseType));
+        }
+
+        curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curlHandler, CURLOPT_VERBOSE, 0);
+        curl_setopt($curlHandler, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($curlHandler, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($curlHandler, CURLOPT_HTTPHEADER, []);
+        curl_setopt($curlHandler, CURLOPT_HEADER, 0);
+        curl_setopt($curlHandler, CURLOPT_POST, 0);
+        curl_setopt($curlHandler, CURLOPT_URL, $url);
+        if (!empty($this->user) && !empty($this->pass)) {
+            curl_setopt($curlHandler, CURLOPT_USERPWD, sprintf('%s:%s', $this->user, $this->pass));
+        }
+        $result = curl_exec($curlHandler);
+        $curlError = curl_error($curlHandler);
+
+        if ($curlError) {
+            throw new ClientException(sprintf('cURL Error: %s', $curlError));
+        }
+        curl_close($curlHandler);
+        return $result;
     }
 }
