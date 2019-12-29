@@ -196,7 +196,7 @@ class Client
      *
      * @return VirtualServerEntity
      */
-    private function generateVirtualServerEntity(SimpleXMLElement $serverData)
+    public function generateVirtualServerEntity(SimpleXMLElement $serverData)
     {
         $server = new VirtualServerEntity();
         $server
